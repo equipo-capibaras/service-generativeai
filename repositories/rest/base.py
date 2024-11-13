@@ -1,5 +1,5 @@
 import logging
-from typing import Never
+from typing import Any, Never
 
 import requests
 
@@ -12,7 +12,7 @@ class RestBaseRepository:
         self.token_provider = token_provider
         self.logger = logging.getLogger(self.__class__.__name__)
 
-    def _get_headers(self) -> dict[str, str] | None:
+    def _headers(self) -> dict[str, str] | None:
         if self.token_provider is None:
             headers = None
         else:
@@ -22,7 +22,10 @@ class RestBaseRepository:
         return headers
 
     def authenticated_get(self, url: str) -> requests.Response:
-        return requests.get(url, timeout=2, headers=self._get_headers())
+        return requests.get(url, timeout=2, headers=self._headers())
+
+    def authenticated_post(self, url: str, body: Any) -> requests.Response:  # noqa: ANN401
+        return requests.post(url, data=body, timeout=2, headers=self._headers())
 
     def unexpected_error(self, resp: requests.Response) -> Never:
         resp.raise_for_status()
