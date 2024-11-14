@@ -78,7 +78,7 @@ class IncidentsAIReponse(MethodView):
     def get(self, incident_repo: IncidentRepository = Provide[Container.incident_repo]) -> Response:
         data = load_event_data()
 
-        if data.history[-1].action == Action.CREATED.value:
+        if data.history[-1].action == Action.CREATED.value and data.channel == Channel.MOBILE:
             responses_ai = responses_pt_br if data.language == 'pt' else responses
             random_response = random.choice(responses_ai)  # noqa: S311
             body = IncidentUpdateBody(action=Action.AI_RESPONSE, description=random_response)

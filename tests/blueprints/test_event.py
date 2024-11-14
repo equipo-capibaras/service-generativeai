@@ -1,18 +1,20 @@
 from typing import Any, cast
+from unittest.mock import Mock
 
 from faker import Faker
 from unittest_parametrize import ParametrizedTestCase
 
 from app import create_app
 from models import Action, Channel, Plan, Role
+from repositories import IncidentRepository
 
 
-class TestEvent(ParametrizedTestCase):
+class TestIncidentsAIReponse(ParametrizedTestCase):
     def setUp(self) -> None:
         self.faker = Faker()
-
         self.app = create_app()
         self.client = self.app.test_client()
+        self.incident_repo_mock = Mock(IncidentRepository)
 
     def gen_random_event_data(self, channel: Channel | None = None) -> dict[str, Any]:
         return {
@@ -42,22 +44,26 @@ class TestEvent(ParametrizedTestCase):
                 {
                     'seq': 0,
                     'date': self.faker.past_datetime().isoformat().replace('+00:00', 'Z'),
-                    'action': Action.CREATED,
+                    'action': Action.CREATED.value,
                     'description': self.faker.text(200),
                 },
             ],
             'client': {
                 'id': cast(str, self.faker.uuid4()),
-                'name': self.faker.name(),
+                'name': self.faker.company(),
                 'emailIncidents': self.faker.email(),
                 'plan': self.faker.random_element(list(Plan)),
             },
         }
 
-    def test_update(self) -> None:
-        data = self.gen_random_event_data()
+    def test_incident_ai_response_created(self) -> None:
+        data = self.gen_random_event_data(Channel.MOBILE)
 
-        with self.assertLogs():
-            resp = self.client.post('/api/v1/incident-update/generativeai', json=data)
+        with self.app.container.incident_repo.override(self.incident_repo_mock):
+            response = self.client.get('/api/v1/incident-update/generativeai', json=data)
 
-        self.assertEqual(resp.status_code, 200)
+        self.incident_repo_mock.update.assert_called_once()
+        self.assertEqual(response.status_code, 200)
+
+        expected_response = {'message': 'Event processed.', 'code': 200}
+        self.assertEqual(response.json, expected_response)
