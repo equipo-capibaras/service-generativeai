@@ -292,3 +292,5 @@ suggestions_es_ar = [
         ],
     },
 ]
+
+mock_suggestions_dict = {'pt-BR': suggestions_pt_br, 'es-AR': suggestions_es_ar, 'es-CO': suggestions}

@@ -4,11 +4,11 @@ from typing import Any
 from unittest.mock import Mock, patch
 
 from faker import Faker
-from unittest_parametrize import ParametrizedTestCase
+from unittest_parametrize import ParametrizedTestCase, parametrize
 
 from app import create_app
 from models import Role
-from utils import suggestions, suggestions_es_ar, suggestions_pt_br
+from utils import mock_suggestions_dict
 
 
 class TestIncidentsAISuggestions(ParametrizedTestCase):
@@ -36,7 +36,7 @@ class TestIncidentsAISuggestions(ParametrizedTestCase):
         token_encoded = self.encode_token(token)
 
         response = self.client.get(
-            '/api/v1/incidents/generativeai/suggestions',
+            f'/api/v1/incidents/{self.faker.uuid4()}/generativeai/suggestions',
             headers={'X-Apigateway-Api-Userinfo': token_encoded},
         )
 
@@ -44,47 +44,25 @@ class TestIncidentsAISuggestions(ParametrizedTestCase):
         if response.json is not None:
             self.assertIn('Forbidden', response.json['message'])
 
+    @parametrize(
+        ('language',),
+        [
+            ('es-CO',),
+            ('es-AR',),
+            ('pt-BR',),
+        ],
+    )
     @patch('random.choice')
-    def test_suggestions_pt_br(self, mock_choice: Mock) -> None:
+    def test_suggestions_pt_br(self, mock_choice: Mock, language: str) -> None:
         mock_choice.side_effect = lambda x: x[0]
         token = self.gen_token_client(client_id=str(self.faker.uuid4()), role=Role.AGENT)
         token_encoded = self.encode_token(token)
 
         response = self.client.get(
-            '/api/v1/incidents/generativeai/suggestions',
+            f'/api/v1/incidents/{self.faker.uuid4()}/generativeai/suggestions',
             headers={'X-Apigateway-Api-Userinfo': token_encoded},
-            query_string={'locale': 'pt-BR'},
+            query_string={'locale': language},
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn(response.json, suggestions_pt_br)
-
-    @patch('random.choice')
-    def test_suggestions_es_ar(self, mock_choice: Mock) -> None:
-        mock_choice.side_effect = lambda x: x[0]
-        token = self.gen_token_client(client_id=str(self.faker.uuid4()), role=Role.AGENT)
-        token_encoded = self.encode_token(token)
-
-        response = self.client.get(
-            '/api/v1/incidents/generativeai/suggestions',
-            headers={'X-Apigateway-Api-Userinfo': token_encoded},
-            query_string={'locale': 'es-AR'},
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(response.json, suggestions_es_ar)
-
-    @patch('random.choice')
-    def test_default_suggestions(self, mock_choice: Mock) -> None:
-        mock_choice.side_effect = lambda x: x[0]
-        token = self.gen_token_client(client_id=str(self.faker.uuid4()), role=Role.AGENT)
-        token_encoded = self.encode_token(token)
-
-        response = self.client.get(
-            '/api/v1/incidents/generativeai/suggestions',
-            headers={'X-Apigateway-Api-Userinfo': token_encoded},
-            query_string={'locale': 'es-CO'},
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(response.json, suggestions)
+        self.assertIn(response.json, mock_suggestions_dict[language])

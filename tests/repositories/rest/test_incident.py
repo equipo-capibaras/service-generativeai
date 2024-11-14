@@ -3,6 +3,7 @@ from unittest.mock import Mock
 
 import responses
 from faker import Faker
+from requests import HTTPError
 from unittest_parametrize import ParametrizedTestCase, parametrize
 
 from models import Action, HistoryEntry, IncidentUpdateBody
@@ -106,7 +107,7 @@ class TestRestIncidentRepository(ParametrizedTestCase):
             description=self.faker.text(),
         )
 
-        with responses.RequestsMock() as rsps, self.assertRaises(Exception):  # noqa: B017
+        with responses.RequestsMock() as rsps, self.assertRaises(HTTPError):
             rsps.post(
                 f'{self.base_url}/api/v1/clients/{client_id}/employees/{assigned_to_id}/incidents/{incident_id}/update',
                 status=status,

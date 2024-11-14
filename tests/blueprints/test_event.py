@@ -44,7 +44,7 @@ class TestIncidentsAIResponse(ParametrizedTestCase):
                 {
                     'seq': 0,
                     'date': self.faker.past_datetime().isoformat().replace('+00:00', 'Z'),
-                    'action': Action.CREATED.value,
+                    'action': Action.CREATED,
                     'description': self.faker.text(200),
                 },
             ],

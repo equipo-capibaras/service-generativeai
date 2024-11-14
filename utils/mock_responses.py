@@ -56,3 +56,5 @@ responses_pt_br = [
         'sua solicitação e responderá o mais rápido possível.'
     ),
 ]
+
+mock_responses_dict = {'pt': responses_pt_br, 'es': responses}
