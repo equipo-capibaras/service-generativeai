@@ -24,8 +24,8 @@ class RestBaseRepository:
     def authenticated_get(self, url: str) -> requests.Response:
         return requests.get(url, timeout=2, headers=self._headers())
 
-    def authenticated_post(self, url: str, body: Any) -> requests.Response:  # noqa: ANN401
-        return requests.post(url, data=body, timeout=2, headers=self._headers())
+    def authenticated_post(self, url: str, body: dict[str, Any]) -> requests.Response:
+        return requests.post(url, json=body, timeout=2, headers=self._headers())
 
     def unexpected_error(self, resp: requests.Response) -> Never:
         resp.raise_for_status()

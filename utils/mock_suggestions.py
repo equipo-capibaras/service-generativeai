@@ -3,15 +3,23 @@ suggestions = [
         'steps': [
             {
                 'text': 'Verificar la información del envío',
-                'detail': 'Revisa la información de seguimiento para confirmar el estado actual del paquete y si hubo retrasos.',
+                'detail': (
+                    'Revisa la información de seguimiento para confirmar el estado actual del paquete y si hubo retrasos.'
+                ),
             },
             {
                 'text': 'Contactar al equipo de logística',
-                'detail': 'Si el envío está retrasado o perdido, escala el problema al equipo de logística para que realicen una investigación.',
+                'detail': (
+                    'Si el envío está retrasado o perdido, escala el problema al equipo de logística para que realicen '
+                    'una investigación.'
+                ),
             },
             {
                 'text': 'Comunicar con el cliente',
-                'detail': 'Informa al cliente sobre el estado de la investigación y proporciona un plazo estimado para la resolución.',
+                'detail': (
+                    'Informa al cliente sobre el estado de la investigación y proporciona un plazo estimado para la '
+                    'resolución.'
+                ),
             },
         ],
     },
@@ -27,7 +35,10 @@ suggestions = [
             },
             {
                 'text': 'Actualizar al cliente',
-                'detail': 'Informa al cliente que el proceso de devolución ha sido iniciado y que recibirán instrucciones por correo electrónico.',
+                'detail': (
+                    'Informa al cliente que el proceso de devolución ha sido iniciado y que recibirán instrucciones por '
+                    'correo electrónico.'
+                ),
             },
         ],
     },
@@ -43,7 +54,10 @@ suggestions = [
             },
             {
                 'text': 'Comunicar al cliente',
-                'detail': 'Informa al cliente que el ajuste está en proceso y que recibirán el reembolso en un plazo de 3 a 5 días hábiles.',
+                'detail': (
+                    'Informa al cliente que el ajuste está en proceso y que recibirán el reembolso en un plazo de 3 a 5 '
+                    'días hábiles.'
+                ),
             },
         ],
     },
@@ -55,7 +69,10 @@ suggestions = [
             },
             {
                 'text': 'Restablecer acceso',
-                'detail': 'Escala al equipo de soporte para restablecer el acceso o proporcionar instrucciones para la recuperación de la cuenta.',
+                'detail': (
+                    'Escala al equipo de soporte para restablecer el acceso o proporcionar instrucciones para la '
+                    'recuperación de la cuenta.'
+                ),
             },
             {
                 'text': 'Informar al cliente',
@@ -75,7 +92,10 @@ suggestions = [
             },
             {
                 'text': 'Notificar al cliente',
-                'detail': 'Informa al cliente que el problema está siendo atendido y proporciona detalles sobre los siguientes pasos.',
+                'detail': (
+                    'Informa al cliente que el problema está siendo atendido y proporciona detalles sobre los siguientes '
+                    'pasos.'
+                ),
             },
         ],
     },
@@ -91,7 +111,10 @@ suggestions_pt_br = [
             },
             {
                 'text': 'Entrar em contato com a equipe de logística',
-                'detail': 'Se o envio estiver atrasado ou perdido, escale o problema para a equipe de logística para iniciar uma investigação.',
+                'detail': (
+                    'Se o envio estiver atrasado ou perdido, escale o problema para a equipe de logística para iniciar '
+                    'uma investigação.'
+                ),
             },
             {
                 'text': 'Comunicar o cliente',
@@ -127,7 +150,9 @@ suggestions_pt_br = [
             },
             {
                 'text': 'Comunicar o cliente',
-                'detail': 'Informe ao cliente que o ajuste está em andamento e que receberá o reembolso em até 3 a 5 dias úteis.',
+                'detail': (
+                    'Informe ao cliente que o ajuste está em andamento e que receberá o reembolso em até 3 a 5 dias úteis.'
+                ),
             },
         ],
     },
@@ -170,15 +195,23 @@ suggestions_es_ar = [
         'steps': [
             {
                 'text': 'Verificar la información del envío',
-                'detail': 'Revisá la información de seguimiento para confirmar el estado actual del paquete y si hubo demoras.',
+                'detail': (
+                    'Revisá la información de seguimiento para confirmar el estado actual del paquete y si hubo demoras.'
+                ),
             },
             {
                 'text': 'Contactar al equipo de logística',
-                'detail': 'Si el envío está demorado o perdido, escalá el problema al equipo de logística para que inicien una investigación.',
+                'detail': (
+                    'Si el envío está demorado o perdido, escalá el problema al equipo de logística para que inicien una '
+                    'investigación.'
+                ),
             },
             {
                 'text': 'Comunicarte con el cliente',
-                'detail': 'Informale al cliente sobre el estado de la investigación y brindale un plazo estimado para la resolución.',
+                'detail': (
+                    'Informale al cliente sobre el estado de la investigación y brindale un plazo estimado para la '
+                    'resolución.'
+                ),
             },
         ],
     },
@@ -194,7 +227,10 @@ suggestions_es_ar = [
             },
             {
                 'text': 'Actualizar al cliente',
-                'detail': 'Informale al cliente que el proceso de devolución fue iniciado y que recibirá instrucciones por correo electrónico.',
+                'detail': (
+                    'Informale al cliente que el proceso de devolución fue iniciado y que recibirá instrucciones por '
+                    'correo electrónico.'
+                ),
             },
         ],
     },
@@ -210,7 +246,10 @@ suggestions_es_ar = [
             },
             {
                 'text': 'Comunicarte con el cliente',
-                'detail': 'Informale al cliente que el ajuste está en proceso y que recibirá el reembolso en un plazo de 3 a 5 días hábiles.',
+                'detail': (
+                    'Informale al cliente que el ajuste está en proceso y que recibirá el reembolso en un plazo de 3 a 5 '
+                    'días hábiles.'
+                ),
             },
         ],
     },
@@ -222,7 +261,10 @@ suggestions_es_ar = [
             },
             {
                 'text': 'Restablecer el acceso',
-                'detail': 'Escalá al equipo de soporte para restablecer el acceso o brindar instrucciones para la recuperación de la cuenta.',
+                'detail': (
+                    'Escalá al equipo de soporte para restablecer el acceso o brindar instrucciones para la recuperación '
+                    'de la cuenta.'
+                ),
             },
             {
                 'text': 'Informar al cliente',
@@ -242,7 +284,10 @@ suggestions_es_ar = [
             },
             {
                 'text': 'Notificar al cliente',
-                'detail': 'Informale al cliente que el problema está siendo atendido y proporcionale detalles sobre los próximos pasos.',
+                'detail': (
+                    'Informale al cliente que el problema está siendo atendido y proporcionale detalles sobre los próximos '
+                    'pasos.'
+                ),
             },
         ],
     },
