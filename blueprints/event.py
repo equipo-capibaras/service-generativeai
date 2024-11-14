@@ -70,12 +70,12 @@ def load_event_data() -> EventBody:
 
 
 @class_route(blp, '/api/v1/incident-update/generativeai')
-class IncidentsAIReponse(MethodView):
+class IncidentsAIResponse(MethodView):
     init_every_request = False
 
     response = json_response({'message': 'Event processed.', 'code': 200}, 200)
 
-    def get(self, incident_repo: IncidentRepository = Provide[Container.incident_repo]) -> Response:
+    def post(self, incident_repo: IncidentRepository = Provide[Container.incident_repo]) -> Response:
         data = load_event_data()
 
         if data.history[-1].action == Action.CREATED.value and data.channel == Channel.MOBILE:

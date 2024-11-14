@@ -9,7 +9,7 @@ from models import Action, Channel, Plan, Role
 from repositories import IncidentRepository
 
 
-class TestIncidentsAIReponse(ParametrizedTestCase):
+class TestIncidentsAIResponse(ParametrizedTestCase):
     def setUp(self) -> None:
         self.faker = Faker()
         self.app = create_app()
@@ -60,7 +60,7 @@ class TestIncidentsAIReponse(ParametrizedTestCase):
         data = self.gen_random_event_data(Channel.MOBILE)
 
         with self.app.container.incident_repo.override(self.incident_repo_mock):
-            response = self.client.get('/api/v1/incident-update/generativeai', json=data)
+            response = self.client.post('/api/v1/incident-update/generativeai', json=data)
 
         self.incident_repo_mock.update.assert_called_once()
         self.assertEqual(response.status_code, 200)
