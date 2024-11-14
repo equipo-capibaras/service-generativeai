@@ -35,8 +35,10 @@ class TestIncidentsAISuggestions(ParametrizedTestCase):
         token = self.gen_token_client(client_id=None, role=Role.USER)
         token_encoded = self.encode_token(token)
 
+        uuid = str(self.faker.uuid4())
+
         response = self.client.get(
-            f'/api/v1/incidents/{self.faker.uuid4()}/generativeai/suggestions',
+            f'/api/v1/incidents/{uuid}/generativeai/suggestions',
             headers={'X-Apigateway-Api-Userinfo': token_encoded},
         )
 
@@ -57,9 +59,9 @@ class TestIncidentsAISuggestions(ParametrizedTestCase):
         mock_choice.side_effect = lambda x: x[0]
         token = self.gen_token_client(client_id=str(self.faker.uuid4()), role=Role.AGENT)
         token_encoded = self.encode_token(token)
-
+        uuid = str(self.faker.uuid4())
         response = self.client.get(
-            f'/api/v1/incidents/{self.faker.uuid4()}/generativeai/suggestions',
+            f'/api/v1/incidents/{uuid}/generativeai/suggestions',
             headers={'X-Apigateway-Api-Userinfo': token_encoded},
             query_string={'locale': language},
         )
