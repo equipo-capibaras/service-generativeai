@@ -84,7 +84,11 @@ class IncidentsAIResponse(MethodView):
     def post(self, incident_repo: IncidentRepository = Provide[Container.incident_repo]) -> Response:
         data = load_event_data()
 
-        if data.history[-1].action == Action.CREATED and data.channel == Channel.MOBILE:
+        if (
+            data.history[-1].action == Action.CREATED
+            and data.channel == Channel.MOBILE
+            and data.client.plan == Plan.EMPRESARIO_PLUS
+        ):
             responses_ai = mock_responses_dict[data.language]
             random_response = random.choice(responses_ai)  # noqa: S311
             body = IncidentUpdateBody(action=Action.AI_RESPONSE, description=random_response)

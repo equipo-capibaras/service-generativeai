@@ -52,7 +52,7 @@ class TestIncidentsAIResponse(ParametrizedTestCase):
                 'id': cast(str, self.faker.uuid4()),
                 'name': self.faker.company(),
                 'emailIncidents': self.faker.email(),
-                'plan': self.faker.random_element(list(Plan)),
+                'plan': Plan.EMPRESARIO_PLUS,
             },
         }
 
