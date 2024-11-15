@@ -94,13 +94,9 @@ class IncidentsAIResponse(MethodView):
             body = IncidentUpdateBody(action=Action.AI_RESPONSE, description=random_response)
 
             history = None
-            try:
-                history = incident_repo.update(
-                    client_id=data.client.id, incident_id=data.id, assigned_to_id=data.assigned_to.id, body=body
-                )
-            except Exception:
-                current_app.logger.exception('Incident %s could not be updated due to an exception', data.id)
-
+            history = incident_repo.update(
+                client_id=data.client.id, incident_id=data.id, assigned_to_id=data.assigned_to.id, body=body
+            )
             self.log_update_result(data.id, history)
 
         return self.response
