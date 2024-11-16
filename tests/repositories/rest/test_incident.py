@@ -64,7 +64,7 @@ class TestRestIncidentRepository(ParametrizedTestCase):
                     'action': history_entry.action.value,
                     'description': history_entry.description,
                 },
-                status=200,
+                status=201,
             )
 
             result = self.repo.update(client_id, incident_id, assigned_to_id, update_body)

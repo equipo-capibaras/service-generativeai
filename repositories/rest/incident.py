@@ -23,7 +23,7 @@ class RestIncidentRepository(IncidentRepository, RestBaseRepository):
             body=dict_body,
         )
 
-        if resp.status_code == requests.codes.ok:
+        if resp.status_code == requests.codes.created:
             data = cast(dict[str, Any], resp.json())
             type_hooks = {datetime: lambda s: datetime.fromisoformat(s), Action: lambda s: Action(s)}
             return dacite.from_dict(
