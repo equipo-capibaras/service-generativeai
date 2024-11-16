@@ -11,4 +11,4 @@ class HistoryEntry:
     date: datetime
     action: Action
     description: str
-    seq: int | None = None
+    seq: int

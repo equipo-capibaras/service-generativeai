@@ -57,8 +57,6 @@ class TestRestIncidentRepository(ParametrizedTestCase):
             rsps.post(
                 f'{self.base_url}/api/v1/clients/{client_id}/employees/{assigned_to_id}/incidents/{incident_id}/update',
                 json={
-                    'incident_id': history_entry.incident_id,
-                    'client_id': history_entry.client_id,
                     'seq': history_entry.seq,
                     'date': history_entry.date.isoformat(),
                     'action': history_entry.action.value,

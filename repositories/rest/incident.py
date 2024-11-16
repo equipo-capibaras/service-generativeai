@@ -25,6 +25,9 @@ class RestIncidentRepository(IncidentRepository, RestBaseRepository):
 
         if resp.status_code == requests.codes.created:
             data = cast(dict[str, Any], resp.json())
+            data['incident_id'] = incident_id
+            data['client_id'] = client_id
+
             type_hooks = {datetime: lambda s: datetime.fromisoformat(s), Action: lambda s: Action(s)}
             return dacite.from_dict(
                 data_class=HistoryEntry,
