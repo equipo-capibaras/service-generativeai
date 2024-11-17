@@ -1,12 +1,17 @@
+import random
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import cast
 
 import marshmallow_dataclass
+from dependency_injector.wiring import Provide
 from flask import Blueprint, Response, current_app, request
 from flask.views import MethodView
 
-from models import Action, Channel, Plan, Role
+from containers import Container
+from models import Action, Channel, HistoryEntry, IncidentUpdateBody, Plan, Role
+from repositories import IncidentRepository
+from utils import mock_responses_dict
 
 from .util import class_route, json_response
 
@@ -65,14 +70,33 @@ def load_event_data() -> EventBody:
 
 
 @class_route(blp, '/api/v1/incident-update/generativeai')
-class UpdateEvent(MethodView):
+class IncidentsAIResponse(MethodView):
     init_every_request = False
 
     response = json_response({'message': 'Event processed.', 'code': 200}, 200)
 
-    def post(self) -> Response:
+    def log_update_result(self, incident_id: str, history: HistoryEntry | None) -> None:
+        if history is None:
+            current_app.logger.info('Incident %s could not be updated', incident_id)
+        else:
+            current_app.logger.info('Incident %s updated', incident_id)
+
+    def post(self, incident_repo: IncidentRepository = Provide[Container.incident_repo]) -> Response:
         data = load_event_data()
 
-        current_app.logger.info('Incident %s updated', data.id)
+        if (
+            data.history[-1].action == Action.CREATED
+            and data.channel == Channel.MOBILE
+            and data.client.plan == Plan.EMPRESARIO_PLUS
+        ):
+            responses_ai = mock_responses_dict[data.language]
+            random_response = random.choice(responses_ai)  # noqa: S311
+            body = IncidentUpdateBody(action=Action.AI_RESPONSE, description=random_response)
+
+            history = None
+            history = incident_repo.update(
+                client_id=data.client.id, incident_id=data.id, assigned_to_id=data.assigned_to.id, body=body
+            )
+            self.log_update_result(data.id, history)
 
         return self.response
