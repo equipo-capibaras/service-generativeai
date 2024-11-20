@@ -9,7 +9,7 @@ from flask import Blueprint, Response, current_app, request
 from flask.views import MethodView
 
 from containers import Container
-from models import Action, Channel, HistoryEntry, IncidentUpdateBody, Plan, Role
+from models import Action, Channel, HistoryEntry, IncidentUpdateBody, Plan, Risk, Role
 from repositories import IncidentRepository
 from utils import mock_responses_dict
 
@@ -53,6 +53,7 @@ class EventBody:
     assigned_to: UserBody
     history: list[HistoryBody]
     client: ClientBody
+    risk: Risk | None = field(default=None, metadata={'by_value': True})
 
 
 def load_event_data() -> EventBody:

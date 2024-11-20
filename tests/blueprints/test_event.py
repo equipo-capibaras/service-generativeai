@@ -5,7 +5,7 @@ from faker import Faker
 from unittest_parametrize import ParametrizedTestCase
 
 from app import create_app
-from models import Action, Channel, Plan, Role
+from models import Action, Channel, Plan, Risk, Role
 from repositories import IncidentRepository
 
 
@@ -54,6 +54,7 @@ class TestIncidentsAIResponse(ParametrizedTestCase):
                 'emailIncidents': self.faker.email(),
                 'plan': Plan.EMPRESARIO_PLUS,
             },
+            'risk': self.faker.random_element(list(Risk)),
         }
 
     def test_incident_ai_response_created(self) -> None:
