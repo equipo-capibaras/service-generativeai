@@ -16,7 +16,7 @@ class RestIncidentRepository(IncidentRepository, RestBaseRepository):
     def __init__(self, base_url: str, token_provider: TokenProvider | None) -> None:
         RestBaseRepository.__init__(self, base_url, token_provider)
 
-    def update(self, client_id: str, incident_id: str, assigned_to_id: str, body: IncidentUpdateBody) -> HistoryEntry | None:
+    def update(self, client_id: str, incident_id: str, assigned_to_id: str, body: IncidentUpdateBody) -> HistoryEntry:
         dict_body = asdict(body)
         resp = self.authenticated_post(
             url=f'{self.base_url}/api/v1/clients/{client_id}/employees/{assigned_to_id}/incidents/{incident_id}/update',
@@ -34,8 +34,5 @@ class RestIncidentRepository(IncidentRepository, RestBaseRepository):
                 data=data,
                 config=dacite.Config(type_hooks=type_hooks),
             )
-
-        if resp.status_code == requests.codes.not_found:
-            return None
 
         self.unexpected_error(resp)  # noqa: RET503

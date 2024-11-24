@@ -9,7 +9,7 @@ from flask import Blueprint, Response, current_app, request
 from flask.views import MethodView
 
 from containers import Container
-from models import Action, Channel, HistoryEntry, IncidentUpdateBody, Plan, Role
+from models import Action, Channel, IncidentUpdateBody, Plan, Risk, Role
 from repositories import IncidentRepository
 from utils import mock_responses_dict
 
@@ -53,6 +53,7 @@ class EventBody:
     assigned_to: UserBody
     history: list[HistoryBody]
     client: ClientBody
+    risk: Risk | None = field(default=None, metadata={'by_value': True})
 
 
 def load_event_data() -> EventBody:
@@ -75,12 +76,6 @@ class IncidentsAIResponse(MethodView):
 
     response = json_response({'message': 'Event processed.', 'code': 200}, 200)
 
-    def log_update_result(self, incident_id: str, history: HistoryEntry | None) -> None:
-        if history is None:
-            current_app.logger.info('Incident %s could not be updated', incident_id)
-        else:
-            current_app.logger.info('Incident %s updated', incident_id)
-
     def post(self, incident_repo: IncidentRepository = Provide[Container.incident_repo]) -> Response:
         data = load_event_data()
 
@@ -93,10 +88,8 @@ class IncidentsAIResponse(MethodView):
             random_response = random.choice(responses_ai)  # noqa: S311
             body = IncidentUpdateBody(action=Action.AI_RESPONSE, description=random_response)
 
-            history = None
-            history = incident_repo.update(
-                client_id=data.client.id, incident_id=data.id, assigned_to_id=data.assigned_to.id, body=body
-            )
-            self.log_update_result(data.id, history)
+            incident_repo.update(client_id=data.client.id, incident_id=data.id, assigned_to_id=data.assigned_to.id, body=body)
+
+            current_app.logger.info('Incident %s updated', data.id)
 
         return self.response
