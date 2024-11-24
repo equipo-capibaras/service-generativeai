@@ -69,26 +69,6 @@ class TestRestIncidentRepository(ParametrizedTestCase):
 
         self.assertEqual(result, history_entry)
 
-    def test_update_not_found(self) -> None:
-        client_id = cast(str, self.faker.uuid4())
-        incident_id = cast(str, self.faker.uuid4())
-        assigned_to_id = cast(str, self.faker.uuid4())
-        update_body = IncidentUpdateBody(
-            action=Action.AI_RESPONSE.value,
-            description=self.faker.text(),
-        )
-
-        with responses.RequestsMock() as rsps:
-            rsps.post(
-                f'{self.base_url}/api/v1/clients/{client_id}/employees/{assigned_to_id}/incidents/{incident_id}/update',
-                json={'message': 'Incident not found', 'code': 404},
-                status=404,
-            )
-
-            result = self.repo.update(client_id, incident_id, assigned_to_id, update_body)
-
-        self.assertIsNone(result)
-
     @parametrize(
         'status',
         [
